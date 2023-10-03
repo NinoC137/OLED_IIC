@@ -105,8 +105,8 @@ int main(void) {
 
     /* Infinite loop */
     /* USER CODE BEGIN WHILE */
-    animateLineDemo1();
-    HAL_Delay(1000);
+//    animateLineDemo1();
+//    HAL_Delay(1000);
 
     animatePointDemo2();
     HAL_Delay(1000);
@@ -115,6 +115,9 @@ int main(void) {
     HAL_Delay(1000);
 
     animateStringDemo();
+    HAL_Delay(1000);
+
+    animateBallAnimation(30, 10);
     HAL_Delay(1000);
 
     OLED_display_off();

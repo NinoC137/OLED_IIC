@@ -206,6 +206,47 @@ void OLED_draw_point(uint8_t x, uint8_t y, pen_typedef pen) {
 }
 
 /**
+  * @brief          draw one part of screan(128*64)
+  * @param[in]      x: x-axis, [0, X_WIDTH-1]
+  * @param[in]      y: y-axis, [0, Y_WIDTH-1]
+  * @param[in]      x1: x-axis, [0, X_WIDTH-1]
+  * @param[in]      y1: y-axis, [0, Y_WIDTH-1]
+  * @param[in]      pen: type of operation,
+                        PEN_CLEAR: set (x,y) to 0
+                        PEN_WRITE: set (x,y) to 1
+                        PEN_INVERSION: (x,y) value inversion
+  * @retval         none
+  */
+void OLED_Full_area(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2, pen_typedef pen) {
+    uint8_t page_start = y1 / 8;
+    uint8_t page_end = y2 / 8;
+    uint8_t row_start = y1 % 8;
+    uint8_t row_end = y2 % 8;
+
+    for (uint8_t x = x1; x <= x2; x++) {
+        for (uint8_t page = page_start; page <= page_end; page++) {
+            uint8_t data = 0xFF;
+
+            if (page == page_start) {
+                data &= ~(0xFF << row_start);
+            }
+
+            if (page == page_end) {
+                data &= (0xFF << (row_end + 1)) - 1;
+            }
+
+            if (pen == PEN_WRITE) {
+                OLED_GRAM[x][page] |= data;
+            } else if (pen == PEN_INVERSION) {
+                OLED_GRAM[x][page] ^= data;
+            } else {
+                OLED_GRAM[x][page] &= ~data;
+            }
+        }
+    }
+}
+
+/**
   * @brief          draw a line from (x1, y1) to (x2, y2)
   * @param[in]      x1: the start point of line
   * @param[in]      y1: the start point of line
@@ -462,4 +503,36 @@ void animateStringDemo() {
         // 延迟一段时间
         HAL_Delay(100);
     }
+}
+
+static Ball_t ball;
+
+static void initBall() {
+    ball.x = 64;
+    ball.y = 0;
+}
+
+void animateBallAnimation(int frameRate, int duration) {
+    pen_typedef ballPen = PEN_WRITE;
+    int totalFrames = frameRate * duration;
+
+    OLED_operate_gram(PEN_CLEAR);
+    OLED_refresh_gram();
+
+    initBall();
+
+    for (int frame = 0; frame < totalFrames; frame++) {
+        // 清空屏幕
+        OLED_operate_gram(PEN_CLEAR);
+        OLED_refresh_gram();
+
+        ball.y = frame * 63 / totalFrames;
+
+        OLED_Full_area(ball.x - 2, ball.y - 2, ball.x + 2, ball.y + 2, ballPen);
+        OLED_refresh_gram();
+
+        HAL_Delay(1000 / frameRate);
+    }
+    OLED_operate_gram(PEN_CLEAR);
+    OLED_refresh_gram();
 }

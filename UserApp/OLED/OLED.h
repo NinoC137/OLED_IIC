@@ -105,6 +105,19 @@ void OLED_set_pos(uint8_t x, uint8_t y);
   */
 void OLED_draw_point(uint8_t x, uint8_t y, pen_typedef pen);
 
+/**
+  * @brief          draw one part of screan(128*64)
+  * @param[in]      x1: x-axis, [0, X_WIDTH-1]
+  * @param[in]      y1: y-axis, [0, Y_WIDTH-1]
+  * @param[in]      x2: x-axis, [0, X_WIDTH-1]
+  * @param[in]      y2: y-axis, [0, Y_WIDTH-1]
+  * @param[in]      pen: type of operation,
+                        PEN_CLEAR: set (x,y) to 0
+                        PEN_WRITE: set (x,y) to 1
+                        PEN_INVERSION: (x,y) value inversion
+  * @retval         none
+  */
+void OLED_Full_area(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2, pen_typedef pen);
 
 /**
   * @brief          draw a line from (x1, y1) to (x2, y2)
@@ -159,6 +172,13 @@ void animateLineDemo1();
 void animatePointDemo2();
 void animatePseudo3DDemo();
 void animateStringDemo();
+
+typedef struct Ball_t{
+    uint8_t x;
+    uint8_t y;
+} Ball_t;
+
+void animateBallAnimation(int frameRate, int duration);
 
 #endif
 
