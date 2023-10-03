@@ -39,6 +39,17 @@ typedef enum
     PEN_INVERSION= 0x02,
 }pen_typedef;
 
+/*
+ * 关于SSD1306内存分区:
+ *  纵向:
+ *      Page 0 ~ 8
+ *  横向
+ *      Seg 0 ~ 128
+ *  每一个Page中对应一个8bit数据位, 用于存放纵向的显示像素位
+ *      例如(0x00)是全部熄灭, (0x0F)是点亮下半Page
+ * */
+
+
 /**
   * @brief          initialize the oled device
   * @param[in]      none
