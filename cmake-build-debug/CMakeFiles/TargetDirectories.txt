@@ -1,0 +1,3 @@
+/home/nino/CLionProjects/OLED_IIC/cmake-build-debug/CMakeFiles/OLED_IIC.elf.dir
+/home/nino/CLionProjects/OLED_IIC/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/nino/CLionProjects/OLED_IIC/cmake-build-debug/CMakeFiles/rebuild_cache.dir
